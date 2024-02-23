@@ -24,9 +24,6 @@ class _LoginFormState extends State<LoginForm> {
           child: Column(
         children: [
           const Spacer(),
-
-
-
           TextFormField(
             decoration: const InputDecoration(
               hintText: "Email",
