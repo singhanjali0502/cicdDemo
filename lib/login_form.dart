@@ -40,7 +40,7 @@ class _LoginFormState extends State<LoginForm> {
           TextButton(
               onPressed: () {},
               child: const Text(
-                "Forget Password",
+                "Forget Passwords",
                 style: TextStyle(color: Colors.white),
               )),
           const SizedBox(
