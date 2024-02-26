@@ -7,26 +7,48 @@ on:
 
 jobs:
   build-and-release:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Retrieve version
-          run: |
-            echo "OLD_VERSION=$(cat ${GITHUB_WORKSPACE}/pubspec.yaml | grep 'version:' | head -1 | cut -f2- -d: | sed -e 's/^[ \t]*//')" >> $GITHUB_OUTPUT
-            echo "NEW_VERSION=$(awk '{ match($0,/([0-9]+)\+([0-9]+)/,a); a[1]=a[1]+1; a[2]=a[2]+1; sub(/[0-9]+\+[0-9]+/,a[1]"+"a[2])}1' ${GITHUB_WORKSPACE}/pubspec.yaml | grep 'version:' | head -1 | cut -f2- -d: | sed -e 's/^[ \t]*//')" >> $GITHUB_OUTPUT
-      - name: Increment version
-          run: |
-            sed -i 's/${{ steps.version.outputs.OLD_VERSION }}/${{ steps.version.outputs.NEW_VERSION }}/g' ${GITHUB_WORKSPACE}/pubspec.yaml
-            echo ${{ steps.version.outputs.OLD_VERSION }}
-            echo ${{ steps.version.outputs.NEW_VERSION }}
 
+      # Run the script to increment the version number
+      - name: Increment Version
+        run: |
+          #!/bin/bash
 
-- name: Setup Node.js
-  uses: actions/setup-node@v4
-  with:
-    node-version: '14'
+          # Function to increment the version number
+          increment_version() {
+              # Extract the current version number from pubspec.yaml
+              current_version=$(grep -oP '^version: \K.*' pubspec.yaml | awk '{$1=$1};1')
+
+              # Split the version number into its components (major, minor, patch)
+              IFS='.' read -r -a version_parts <<< "$current_version"
+              major="${version_parts[0]}"
+              minor="${version_parts[1]}"
+              patch="${version_parts[2]}"
+
+              # Increment the patch version
+              ((patch++))
+
+              # Construct the new version number
+              new_version="$major.$minor.$patch"
+
+              # Update the version number in pubspec.yaml
+              sed -i "s/^version: .*$/version: $new_version/" pubspec.yaml
+
+              echo "Version updated to: $new_version"
+          }
+
+          # Invoke the function to increment the version
+          increment_version
+
+      # Continue with your existing build and release steps
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '14'
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
