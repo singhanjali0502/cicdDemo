@@ -13,10 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '14'
+      # Run the script to increment the version number
+      - name: Increment Version
+        run: |
+          # Add your script invocation here
+  ./increment_version.sh
+
+# Continue with your existing build and release steps
+- name: Setup Node.js
+  uses: actions/setup-node@v4
+  with:
+    node-version: '14'
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
