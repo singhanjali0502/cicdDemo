@@ -13,15 +13,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Verify directory contents
+      - name: List directory contents
+        run: ls -R
+
       # Run the script to increment the version number
       - name: Increment Version
         run: |
-         python increment_version.py
+          cd $GITHUB_WORKSPACE
+  python increment_version.py
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '14'
+# Continue with your existing build and release steps
+- name: Setup Node.js
+  uses: actions/setup-node@v4
+  with:
+    node-version: '14'
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
