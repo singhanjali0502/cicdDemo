@@ -12,33 +12,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        - id: read-version
-                uses: NiklasLehnfeld/flutter-version-number-action@main
-                with:
-                  file-path: example/pubspec.yaml
-                  - uses: nick-invision/assert-action@v1
-                    with:
-                      expected: 0.0.1+1
-                      actual: ${{ steps.read-version.outputs.version-number }}
-      - name: Increment Build Number
+
+      - name: Read Flutter Version
+        id: flutter_version
         run: |
-          #!/bin/bash
-          # Function to increment the build number
-          increment_build_number() {
-              # Extract the current version number from pubspec.yaml
-              current_version=$(grep -oP '^version: \K.*' pubspec.yaml | awk '{$1=$1};1')
-              # Extract the current build number
-              build_number=$(echo "$current_version" | cut -d '+' -f 2)
-              # Increment the build number
-              ((build_number++))
-              # Construct the new version number
-              new_version=$(echo "$current_version" | cut -d '+' -f 1)"+$build_number"
-              # Update the version number in pubspec.yaml
-              sed -i "s/^version: .*$/version: $new_version/" pubspec.yaml
-              echo "Build number updated to: $build_number"
-          }
-          # Invoke the function to increment the build number
-          increment_build_number
+          flutter_version=$(grep -oP '^version: \K.*' pubspec.yaml | awk '{$1=$1};1')
+          echo "::set-output name=version::$flutter_version"
+
+      - name: Print Version
+        run: echo "Flutter version is ${{ steps.flutter_version.outputs.version }}"
 
       # Continue with your existing build and release steps
       - name: Setup Node.js
