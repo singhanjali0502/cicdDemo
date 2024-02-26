@@ -12,18 +12,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: "Retrieve version"
+      - name: Retrieve version
           id: version
           run: |
             echo "OLD_VERSION=$(cat ${GITHUB_WORKSPACE}/pubspec.yaml | grep 'version:' | head -1 | cut -f2- -d: | sed -e 's/^[ \t]*//')" >> $GITHUB_OUTPUT
             echo "NEW_VERSION=$(awk '{ match($0,/([0-9]+)\+([0-9]+)/,a); a[1]=a[1]+1; a[2]=a[2]+1; sub(/[0-9]+\+[0-9]+/,a[1]"+"a[2])}1' ${GITHUB_WORKSPACE}/pubspec.yaml | grep 'version:' | head -1 | cut -f2- -d: | sed -e 's/^[ \t]*//')" >> $GITHUB_OUTPUT
-            - name: "Increment version"
+          - name: Increment version
               run: |
                 sed -i 's/${{ steps.version.outputs.OLD_VERSION }}/${{ steps.version.outputs.NEW_VERSION }}/g' ${GITHUB_WORKSPACE}/pubspec.yaml
                 echo ${{ steps.version.outputs.OLD_VERSION }}
                 echo ${{ steps.version.outputs.NEW_VERSION }}
 
-# Continue with your existing build and release steps
+
 - name: Setup Node.js
   uses: actions/setup-node@v4
   with:
