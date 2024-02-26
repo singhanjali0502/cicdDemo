@@ -13,21 +13,42 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Verify directory contents
-      - name: List directory contents
-        run: ls -R
-
       # Run the script to increment the version number
       - name: Increment Version
         run: |
-          cd $GITHUB_WORKSPACE
-  python increment_version.py
+          #!/bin/bash
 
-# Continue with your existing build and release steps
-- name: Setup Node.js
-  uses: actions/setup-node@v4
-  with:
-    node-version: '14'
+          # Function to increment the version number
+          increment_version() {
+              # Extract the current version number from pubspec.yaml
+              current_version=$(grep -oP '^version: \K.*' pubspec.yaml | awk '{$1=$1};1')
+
+              # Split the version number into its components (major, minor, patch)
+              IFS='.' read -r -a version_parts <<< "$current_version"
+              major="${version_parts[0]}"
+              minor="${version_parts[1]}"
+              patch="${version_parts[2]}"
+
+              # Increment the patch version
+              ((major++))
+
+              # Construct the new version number
+              new_version="$major.$minor.$patch"
+
+              # Update the version number in pubspec.yaml
+              sed -i "s/^version: .*$/version: $new_version/" pubspec.yaml
+
+              echo "Version updated to: $new_version"
+          }
+
+          # Invoke the function to increment the version
+          increment_version
+
+      # Continue with your existing build and release steps
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '14'
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
@@ -74,6 +95,5 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-
 
 
