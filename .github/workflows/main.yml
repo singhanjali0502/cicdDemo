@@ -79,6 +79,7 @@ jobs:
           echo "Extracting version from pubspec.yaml"
           VERSION=$(grep -oP '^version: \K.*' pubspec.yaml | awk '{$1=$1};1')
           echo "::set-output name=version::$VERSION"
+          echo VERSION=${{ steps.flutter-action.outputs.VERSION }}
 
       - name: Get commit hash
         id: get_commit_hash
