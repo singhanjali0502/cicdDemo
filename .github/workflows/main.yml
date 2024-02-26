@@ -30,7 +30,7 @@ jobs:
               patch="${version_parts[2]}"
 
               # Increment the patch version
-              ((major++))
+              ((minor++))
 
               # Construct the new version number
               new_version="$major.$minor.$patch"
