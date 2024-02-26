@@ -17,30 +17,21 @@ jobs:
       - name: Increment Version
         run: |
           #!/bin/bash
-
           # Function to increment the version number
           increment_version() {
               # Extract the current version number from pubspec.yaml
               current_version=$(grep -oP '^version: \K.*' pubspec.yaml | awk '{$1=$1};1')
-
               # Split the version number into its components (major, minor, patch)
               IFS='.' read -r -a version_parts <<< "$current_version"
               major="${version_parts[0]}"
               minor="${version_parts[1]}"
               patch="${version_parts[2]}"
-
-              # Increment the patch version
-              ((current_version++))
-
               # Construct the new version number
-              new_version="$major.$minor.$patch"
-
+              new_version="$major.$minor.$((patch+1))"
               # Update the version number in pubspec.yaml
               sed -i "s/^version: .*$/version: $new_version/" pubspec.yaml
-
               echo "Version updated to: $new_version"
           }
-
           # Invoke the function to increment the version
           increment_version
 
@@ -100,6 +91,3 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-
-
-
