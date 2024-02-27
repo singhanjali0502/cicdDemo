@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-release:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -51,12 +51,12 @@ jobs:
 
       - name: Increment version number
         run: |
-            version=$(awk '/version/{print $2}' pubspec.yaml)
-            major=$(echo $version | cut -d. -f1)
-            minor=$(echo $version | cut -d. -f2)
-            patch=$(echo $version | cut -d. -f3)
-            new_version="$major.$minor.$((patch+1))"
-            sed -i '' "s/version: $version/version: $new_version/" pubspec.yaml
+          version=$(awk '/version/{print $2}' pubspec.yaml)
+          major=$(echo $version | cut -d. -f1)
+          minor=$(echo $version | cut -d. -f2)
+          patch=$(echo $version | cut -d. -f3)
+          new_version="$major.$minor.$((patch+1))"
+          sed -i '' "s/version: $version/version: $new_version/" pubspec.yaml
 
       - name: Commit and push changes
         run: |
@@ -71,13 +71,13 @@ jobs:
         run: echo "::set-output name=commit_hash::$(git rev-parse --short HEAD)"
 
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+         id: create_release
+         uses: actions/create-release@v1
         with:
-          tag_name: v1.0.0+${{ github.run_number }}
-          release_name: v1.0.0+${{ github.run_number }}
-          body: Release notes
-          draft: false
-          prerelease: false
+         tag_name: v1.0.0+${{ github.run_number }}
+         release_name: v1.0.0+${{ github.run_number }}
+         body: Release notes
+         draft: false
+         prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.TOKEN }}
