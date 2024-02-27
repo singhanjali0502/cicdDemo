@@ -51,11 +51,11 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Increment version number
-          run: |
+        run: |
             flutter pub run flutter_version increment
 
-            - name: Commit and push changes
-              run: |
+      - name: Commit and push changes
+        run: |
       git config --local user.email "singhanjali0502@gmail.com"
       git config --local user.name "singhanjali0502"
       git add pubspec.yaml
