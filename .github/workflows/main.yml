@@ -50,8 +50,8 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Get version from package_info_plus
-          run: flutter pub get && flutter pub run flutter_plugin_tools version
-          continue-on-error: true
+        run: flutter pub get && flutter pub run flutter_plugin_tools version
+        continue-on-error: true
 
       - name: Write version to file
           run:
