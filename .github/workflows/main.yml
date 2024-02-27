@@ -53,9 +53,11 @@ jobs:
         run: flutter pub get && flutter pub run flutter_plugin_tools version
         continue-on-error: true
 
-      - name: Write version to file
-        run:
-        echo "version: ${{ steps.get_version.outputs.version }}" > version.yaml
+      - name: Update pubspec.yaml
+        run: |
+            version=$(grep -oP '^version: \K.*' pubspec.yaml)
+            new_version=${{ steps.get_version.outputs.version }}
+            sed -i "s/version: $version/version: $new_version/" pubspec.yaml
 
       - name: Commit and push changes
         run: |
