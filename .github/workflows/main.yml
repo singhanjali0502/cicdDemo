@@ -51,7 +51,7 @@ jobs:
 
       - name: Update Version
         run: |
-          ./update_version.sh
+          ./login_form.dart
 
       - name: Commit and push changes
         run: |
