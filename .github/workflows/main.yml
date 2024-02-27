@@ -49,9 +49,11 @@ jobs:
           name: demo_release_apk_${{ github.run_number }}
           path: build/app/outputs/flutter-apk/app-release.apk
 
-      - name: Get version from package_info_plus
-        run: flutter pub get && flutter pub run flutter_plugin_tools version
-        continue-on-error: true
+      - name: Get version from pubspec.yaml
+        id: get_version
+        run: |
+            version=$(grep -oP '^version: \K.*' pubspec.yaml)
+            echo "::set-output name=version::$version"
 
       - name: Update pubspec.yaml
         run: |
