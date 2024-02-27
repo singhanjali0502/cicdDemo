@@ -54,8 +54,8 @@ jobs:
         continue-on-error: true
 
       - name: Write version to file
-          run:
-            echo "version: ${{ steps.get_version.outputs.version }}" > version.yaml
+        run:
+        echo "version: ${{ steps.get_version.outputs.version }}" > version.yaml
 
       - name: Commit and push changes
         run: |
