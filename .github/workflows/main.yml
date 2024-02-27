@@ -21,7 +21,6 @@ jobs:
       - name: Print Version
         run: echo "Flutter version is ${{ steps.flutter_version.outputs.version }}"
 
-      # Continue with your existing build and release steps
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -52,40 +51,28 @@ jobs:
 
       - name: Increment version number
         run: |
-            flutter pub run flutter_version increment
+          flutter pub run flutter_version increment
 
       - name: Commit and push changes
         run: |
-      git config --local user.email "singhanjali0502@gmail.com"
-      git config --local user.name "singhanjali0502"
-      git add pubspec.yaml
-      git commit -m "CI: Increment version number"
-      git push
+  git config --local user.email "singhanjali0502@gmail.com"
+  git config --local user.name "singhanjali0502"
+  git add pubspec.yaml
+git commit -m "CI: Increment version number"
+  git push
 
-      - name: Get version from pubspec.yaml
-        id: get_version
-        run: |
-          echo "Extracting version from pubspec.yaml"
-          VERSION=$(grep -oP '^version: \K.*' pubspec.yaml | awk '{$1=$1};1')
-          echo "::set-output name=version::$VERSION"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+- name: Get commit hash
+  id: get_commit_hash
+  run: echo "::set-output name=commit_hash::$(git rev-parse --short HEAD)"
 
-      - name: Use the version number
-        run: |
-          echo "Version is $VERSION"
-
-      - name: Get commit hash
-        id: get_commit_hash
-        run: echo "::set-output name=commit_hash::$(git rev-parse --short HEAD)"
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: v1.0.0+${{ github.run_number }}
-          release_name: v1.0.0+${{ github.run_number }}
-          body: Release notes
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+- name: Create Release
+  id: create_release
+  uses: actions/create-release@v1
+  with:
+    tag_name: v1.0.0+${{ github.run_number }}
+    release_name: v1.0.0+${{ github.run_number }}
+    body: Release notes
+    draft: false
+    prerelease: false
+  env:
+    GITHUB_TOKEN: ${{ secrets.TOKEN }}
