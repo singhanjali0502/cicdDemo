@@ -16,7 +16,7 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  String? update_version = '';
+  String? versionNumber = '';
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _LoginFormState extends State<LoginForm> {
   void getVersionNumber() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     setState(() {
-      update_version = packageInfo.version;
+      versionNumber = packageInfo.version;
     });
   }
 
@@ -98,9 +98,9 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),),
                 const SizedBox(height: 10,),
-                if (update_version != null)
+                if (versionNumber != null)
         Text(
-        'Version: $update_version',
+        'Version: $versionNumber',
         style: const TextStyle(color: Colors.white),
       ),
 
