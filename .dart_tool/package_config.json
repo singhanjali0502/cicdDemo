@@ -230,6 +230,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "package_info_plus",
+      "rootUri": "file:///Users/rootinfosol/.pub-cache/hosted/pub.dev/package_info_plus-3.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "package_info_plus_platform_interface",
+      "rootUri": "file:///Users/rootinfosol/.pub-cache/hosted/pub.dev/package_info_plus_platform_interface-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "path",
       "rootUri": "file:///Users/rootinfosol/.pub-cache/hosted/pub.dev/path-1.8.2",
       "packageUri": "lib/",
@@ -404,7 +416,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2024-02-20T10:30:21.585114Z",
+  "generated": "2024-02-27T05:42:04.854479Z",
   "generator": "pub",
   "generatorVersion": "2.19.3"
 }
