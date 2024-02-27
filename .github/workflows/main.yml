@@ -58,7 +58,7 @@ jobs:
             git config --local user.email "singhanjali0502@gmail.com"
             git config --local user.name "singhanjali0502"
             git add pubspec.yaml
-git commit -m "CI: Increment version number"
+
 - name: Get commit hash
   id: get_commit_hash
   run: echo "::set-output name=commit_hash::$(git rev-parse --short HEAD)"
