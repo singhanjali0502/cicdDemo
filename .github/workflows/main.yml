@@ -63,9 +63,11 @@ jobs:
 
       - name: Increment Version
         run: |
-            current_version=$(grep -oP '^version: \K.*' pubspec.yaml)
-            new_version=$((current_version +1))
-            sed -i "s/version: $current_version/version: $new_version/" pubspec.yaml
+          CURRENT_VERSION=$((CURRENT_VERSION + 1))
+          CODE_VERSION=$((CURRENT_VERSION + 1))
+          echo $CURRENT_VERSION
+          sed -i "/version:/c version: 1.0.$CURRENT_VERSION+$CODE_VERSION" pubspec.yaml    #removing line which contain *** version: ***
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
 
       - name: Get commit hash
         id: get_commit_hash

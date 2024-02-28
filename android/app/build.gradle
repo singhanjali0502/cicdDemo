@@ -51,7 +51,7 @@ android {
         targetSdkVersion 33
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
-        versionName "1.0.0"
+        versionName "1.0."
     }
 
     buildTypes {
