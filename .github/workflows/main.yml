@@ -63,9 +63,8 @@ jobs:
 
       - name: Increment Version
         run: |
-          current_version=$(grep -oP '^versionName ".*"' android/app/build.gradle | sed 's/versionName "//' | sed 's/"//')
-          new_version=$((current_version + 1))
-          sed -i "s/versionName \"$current_version\"/versionName \"$new_version\"/" android/app/build.gradle
+          chmod +x increment.sh
+          ./increment.sh
 
       - name: Get commit hash
         id: get_commit_hash
