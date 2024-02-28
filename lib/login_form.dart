@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/view/home_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart'; // Import package_info_plus
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -16,18 +16,21 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  String? versionNumber = '';
+  // Variable to hold the version number
+  String _version = '';
 
   @override
   void initState() {
     super.initState();
-    getVersionNumber();
+    // Fetch and set the version number when the widget is initialized
+    _fetchVersion();
   }
 
-  void getVersionNumber() async {
+  // Function to fetch the version number from the pubspec.yaml file
+  Future<void> _fetchVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     setState(() {
-      versionNumber = packageInfo.version;
+      _version = packageInfo.version;
     });
   }
 
@@ -49,7 +52,6 @@ class _LoginFormState extends State<LoginForm> {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your email';
                 }
-                // You can add more complex email validation here if needed
                 return null;
               },
             ),
@@ -58,7 +60,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             TextFormField(
               controller: passwordController,
-              obscureText: true, // to obscure the password
+              obscureText: true,
               decoration: const InputDecoration(
                 hintText: "Password",
               ),
@@ -66,14 +68,11 @@ class _LoginFormState extends State<LoginForm> {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your password';
                 }
-                // You can add more complex password validation here if needed
                 return null;
               },
             ),
             TextButton(
-              onPressed: () {
-                // Implement forget password logic here
-              },
+              onPressed: () {},
               child: const Text(
                 "Forget Passwords",
                 style: TextStyle(color: Colors.white),
@@ -83,29 +82,25 @@ class _LoginFormState extends State<LoginForm> {
               height: 10,
             ),
             Container(
-              decoration: BoxDecoration(
-                color: Colors.white38,
-                borderRadius: BorderRadius.circular(10),
-              ),
+              decoration: BoxDecoration(color: Colors.white38, borderRadius: BorderRadius.circular(10)),
               width: 100,
               child: TextButton(
                 onPressed: () {
-                  logIn(emailController.text, passwordController.text);
+                  _login(emailController.text, passwordController.text);
                 },
                 child: const Text(
                   "Log In",
                   style: TextStyle(color: Colors.white),
                 ),
-              ),),
-                const SizedBox(height: 10,),
-                if (versionNumber != null)
-        Text(
-        'Version: $versionNumber',
-        style: const TextStyle(color: Colors.white),
-      ),
-
+              ),
+            ),
             const Spacer(
               flex: 2,
+            ),
+            // Display the version number
+            Text(
+              'Version: $_version',
+              style: const TextStyle(fontSize: 14),
             ),
           ],
         ),
@@ -113,9 +108,8 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  void logIn(String email, String password) {
+  void _login(String email, String password) {
     if (_formKey.currentState!.validate()) {
-      // Your login logic goes here
       Fluttertoast.showToast(msg: 'Login Successfully');
       Get.to(HomeView());
     }
